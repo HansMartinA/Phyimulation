@@ -52,6 +52,10 @@ app.initialize();
 function resizeCanvas() {
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
+	if(currentSphere!=null) {
+		currentSphere.walls.width = canvas.width;
+		currentSphere.walls.height = canvas.height;
+	}
 }
 
 /*
@@ -107,20 +111,56 @@ function drawFrame() {
  */
 // Time interval for retrieving the acceleration values.
 var deltaTa = 0.05;
-// Contains the current acceleration of the sphere.
+// Time for vibration in milliseconds when the sphere hits the wall.
+var deltaTvib = 100;
+// Contains the current acceleration of the sphere in meter per second squared.
 var acceleration = {ax:0, ay:0};
 
 // Constructor for spheres.
-function Sphere(mass, color) {
+// cor: coefficient of restitution.
+function Sphere(mass, color, cor) {
+	// The bounding box defines the position of the sphere.
 	this.boundingBox = {x:0, y:0, radius:12.5},
+	// The wall defines the area in which the sphere moves.
+	this.walls = {x:0, y:0, width:0, height:0};
+	// Mass of the sphere in kilogramme.
 	this.mass = mass,
+	// Velocity of the sphere in meter per second.
 	this.velocity = {vx:0, vy:0},
+	// The coefficient of restitution as value between 0 and 1.
+	this.cor = cor;
+	// Color of the sphere.
 	this.color = color,
+	// Updates the position.
 	this.updatePosition = function(deltaT) {
 		this.velocity.vx += deltaT*acceleration.ax;
 		this.velocity.vy += deltaT*acceleration.ay;
-		this.boundingBox.x += 0.5*deltaT*this.velocity.vx;
-		this.boundingBox.y += 0.5*deltaT*this.velocity.vy;
+		var nextX = this.boundingBox.x+0.5*deltaT*this.velocity.vx;
+		var nextY = this.boundingBox.y+0.5*deltaT*this.velocity.vy;
+		var invertX = function() {
+			this.velocity.vx = this.cor*(0-this.velocity.vx);
+			navigator.vibrate(deltaTvib);
+		}
+		var invertY = function() {
+			this.velocity.vy = this.cor*(0-this.velocity.vy);
+			navigator.vibrate(deltaTvib);
+		}
+		if(nextX <= this.walls.x) {
+			invertX();
+			nextX = this.walls.x;
+		} else if(nextX+2*this.boundingBox.radius >= this.walls.x+this.walls.width) {
+			invertX();
+			nextX = this.walls.x+this.walls.width;
+		}
+		if(nextY <= this.walls.y) {
+			invertY();
+			nextY = this.walls.y;
+		} else if(nextY+2*this.boundingBox.radius >= this.walls.y+this.walls.height) {
+			invertY();
+			nextY = this.walls.y+this.walls.height;
+		}
+		this.boundingBox.x = nextX;
+		this.boundingBox.y = nextY;
 	}
 }
 
