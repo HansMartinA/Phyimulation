@@ -27,7 +27,6 @@ var app = {
     initialize: function() {
     	canvas = document.getElementById("simulationArea");
     	window.addEventListener("resize", resizeCanvas);
-    	window.addEventListener("orientationchange", resizeCanvas);
     	resizeCanvas();
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
     },
@@ -89,7 +88,7 @@ function stopDrawing() {
 
 // Draws the sphere on a frame.
 function drawFrame() {
-	var deltaT = Date.now()-lastDraw;
+	var deltaT = (Date.now()-lastDraw)/1000;
 	lastDraw = Date.now();
 	currentSphere.updatePosition(deltaT);
 	var context = canvas.getContext('2d');
@@ -100,16 +99,15 @@ function drawFrame() {
 	context.moveTo(midX, midY);
 	context.arc(midX, midY, currentSphere.boundingBox.radius, 0, Math.PI*2, true);
 	context.closePath();
-	context.strokeStyle = currentSphere.color;
-	context.lineWidth = 1;
-	context.lineJoin = 'round';
+	context.fillStyle = currentSphere.color;
+	context.lineWidth = 0;
 	context.fill();
 	window.requestAnimationFrame(drawFrame, canvas);
 }
 
 // Updates the acceleration with a current acceleration value retrieved by the accelerometer.
 function updateAcceleration(acceleration) {
-	accelerationValues.ax = acceleration.x;
+	accelerationValues.ax = -acceleration.x;
 	accelerationValues.ay = acceleration.y;
 }
 
@@ -129,8 +127,10 @@ var deltaTvib = 100;
 var accelerationValues = {ax:0, ay:0};
 
 // Constructor for spheres.
-// cor: coefficient of restitution.
-function Sphere(mass, color, cor) {
+// mass: mass of the sphere in kilogramme. Has to be a positive value.
+// cor: coefficient of restitution. Must be between 0 and 1.
+// color: color of the sphere. Has to be a valid html color.
+function Sphere(mass, cor, color) {
 	// The bounding box defines the position of the sphere.
 	this.boundingBox = {x:0, y:0, radius:12.5},
 	// The wall defines the area in which the sphere moves.
@@ -143,7 +143,8 @@ function Sphere(mass, color, cor) {
 	this.cor = cor;
 	// Color of the sphere.
 	this.color = color,
-	// Updates the position.
+	// Updates the position based on the current acceleration.
+	// deltaT: time difference since the last calculation in seconds.
 	this.updatePosition = function(deltaT) {
 		this.velocity.vx += deltaT*accelerationValues.ax;
 		this.velocity.vy += deltaT*accelerationValues.ay;
@@ -173,4 +174,4 @@ function Sphere(mass, color, cor) {
 }
 
 // Default sphere.
-var defaultSphere = new Sphere(1, '#000000', 1);
+var defaultSphere = new Sphere(1, 0.25, '#000000');
