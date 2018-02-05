@@ -52,10 +52,6 @@ app.initialize();
 function resizeCanvas() {
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
-	if(currentSphere!=null) {
-		currentSphere.walls.width = canvas.width;
-		currentSphere.walls.height = canvas.height;
-	}
 }
 
 /*
@@ -70,11 +66,16 @@ var currentSphere = null;
 var lastDraw = null;
 // ID of the next requested frame draw. It is used to cancel the animation.
 var requestID = null;
+// Watch ID of the accelerometer.
+var watchID = null;
 
 // Starts the drawing process. It requires a sphere to draw.
 function beginDrawing(sphere) {
 	currentSphere = sphere;
+	watchID = navigator.accelerometer.watchAcceleration(updateAcceleration, onAccelerometerError, {frequency:deltaTa});
 	canvas = document.getElementById("simulationArea");
+	currentSphere.walls.width = canvas.width;
+	currentSphere.walls.height = canvas.height;
 	lastDraw = Date.now();
 	requestID = window.requestAnimationFrame(drawFrame, canvas);
 }
@@ -83,11 +84,12 @@ function beginDrawing(sphere) {
 function stopDrawing() {
 	window.cancelAnimationFrame(requestID);
 	requestID = undefined;
+	navigator.accelerometer.clearWatch(watchID);
 }
 
 // Draws the sphere on a frame.
 function drawFrame() {
-	var deltaT = lastDraw-Date.now();
+	var deltaT = Date.now()-lastDraw;
 	lastDraw = Date.now();
 	currentSphere.updatePosition(deltaT);
 	var context = canvas.getContext('2d');
@@ -105,6 +107,16 @@ function drawFrame() {
 	window.requestAnimationFrame(drawFrame, canvas);
 }
 
+// Updates the acceleration with a current acceleration value retrieved by the accelerometer.
+function updateAcceleration(acceleration) {
+	accelerationValues.ax = acceleration.x;
+	accelerationValues.ay = acceleration.y;
+}
+
+// Called when there is an error on retrieving the acceleration. Currently, not implemented.
+function onAccelerometerError() {
+}
+
 /*
  * Profiles section: defines the sphere class and built-in spheres.
  * 
@@ -114,7 +126,7 @@ var deltaTa = 0.05;
 // Time for vibration in milliseconds when the sphere hits the wall.
 var deltaTvib = 100;
 // Contains the current acceleration of the sphere in meter per second squared.
-var acceleration = {ax:0, ay:0};
+var accelerationValues = {ax:0, ay:0};
 
 // Constructor for spheres.
 // cor: coefficient of restitution.
@@ -133,31 +145,27 @@ function Sphere(mass, color, cor) {
 	this.color = color,
 	// Updates the position.
 	this.updatePosition = function(deltaT) {
-		this.velocity.vx += deltaT*acceleration.ax;
-		this.velocity.vy += deltaT*acceleration.ay;
+		this.velocity.vx += deltaT*accelerationValues.ax;
+		this.velocity.vy += deltaT*accelerationValues.ay;
 		var nextX = this.boundingBox.x+0.5*deltaT*this.velocity.vx;
 		var nextY = this.boundingBox.y+0.5*deltaT*this.velocity.vy;
-		var invertX = function() {
+		if(nextX < this.walls.x) {
 			this.velocity.vx = this.cor*(0-this.velocity.vx);
 			navigator.vibrate(deltaTvib);
-		}
-		var invertY = function() {
-			this.velocity.vy = this.cor*(0-this.velocity.vy);
-			navigator.vibrate(deltaTvib);
-		}
-		if(nextX <= this.walls.x) {
-			invertX();
 			nextX = this.walls.x;
 		} else if(nextX+2*this.boundingBox.radius >= this.walls.x+this.walls.width) {
-			invertX();
-			nextX = this.walls.x+this.walls.width;
+			this.velocity.vx = this.cor*(0-this.velocity.vx);
+			navigator.vibrate(deltaTvib);
+			nextX = this.walls.x+this.walls.width-2*this.boundingBox.radius;
 		}
-		if(nextY <= this.walls.y) {
-			invertY();
+		if(nextY < this.walls.y) {
+			this.velocity.vy = this.cor*(0-this.velocity.vy);
+			navigator.vibrate(deltaTvib);
 			nextY = this.walls.y;
 		} else if(nextY+2*this.boundingBox.radius >= this.walls.y+this.walls.height) {
-			invertY();
-			nextY = this.walls.y+this.walls.height;
+			this.velocity.vy = this.cor*(0-this.velocity.vy);
+			navigator.vibrate(deltaTvib);
+			nextY = this.walls.y+this.walls.height-2*this.boundingBox.radius;
 		}
 		this.boundingBox.x = nextX;
 		this.boundingBox.y = nextY;
@@ -165,4 +173,4 @@ function Sphere(mass, color, cor) {
 }
 
 // Default sphere.
-var defaultSphere = new Sphere(1, '#000000');
+var defaultSphere = new Sphere(1, '#000000', 1);
