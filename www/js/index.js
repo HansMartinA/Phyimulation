@@ -34,14 +34,17 @@ var app = {
     onDeviceReady: function() {
     	document.addEventListener("pause", this.onPause, false);
     	document.addEventListener("resume", this.onResume, false);
+    	window.plugins.insomnia.keepAwake();
     	beginDrawing(defaultSphere);
     },
     // pause Event Handler
     onPause: function() {
     	stopDrawing();
+    	window.plugins.insomnia.allowSleepAgain();
     },
     // resume Event Handler
     onResume: function() {
+    	window.plugins.insomnia.keepAwake();
     	beginDrawing(defaultSphere);
     }
 };
