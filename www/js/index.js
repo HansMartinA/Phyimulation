@@ -34,6 +34,7 @@ var app = {
     onDeviceReady: function() {
     	document.addEventListener("pause", this.onPause, false);
     	document.addEventListener("resume", this.onResume, false);
+    	window.addEventListener("deviceorientation", updateNormalForce, true);
     	window.plugins.insomnia.keepAwake();
     	beginDrawing(defaultSphere);
     },
@@ -118,6 +119,12 @@ function updateAcceleration(acceleration) {
 function onAccelerometerError() {
 }
 
+// Updates the normal force acting on the current sphere based upon the current device orientation.
+function updateNormalForce(event) {
+	normalForce.fnx = -Math.abs(Math.cos(event.beta*Math.PI/180)*currentSphere.mass*g);
+	normalForce.fny = -Math.abs(Math.cos(event.gamma*Math.PI/180)*currentSphere.mass*g);
+}
+
 /*
  * Profiles section: defines the sphere class and built-in spheres.
  * 
@@ -126,14 +133,20 @@ function onAccelerometerError() {
 var deltaTa = 0.05;
 // Time for vibration in milliseconds when the sphere hits the wall.
 var deltaTvib = 100;
+// Constant for the gravitational acceleration of the earth in meter per second squared.
+var g = 9.81;
 // Contains the current acceleration of the sphere in meter per second squared.
 var accelerationValues = {ax:0, ay:0};
+// Stores the current normal force acting on the sphere.
+var normalForce = {fnx:0, fny:0};
 
 // Constructor for spheres.
 // mass: mass of the sphere in kilogramme. Has to be a positive value.
 // cor: coefficient of restitution. Must be between 0 and 1.
+// staticCOF: coefficient of the static friction. Must be between 0 and 1.
+// slidingCOF: coefficient of the sliding friction. Must be between 0 and 1.
 // color: color of the sphere. Has to be a valid html color.
-function Sphere(mass, cor, color) {
+function Sphere(mass, cor, staticCOF, slidingCOF, color) {
 	// The bounding box defines the position of the sphere.
 	this.boundingBox = {x:0, y:0, radius:12.5},
 	// The wall defines the area in which the sphere moves.
@@ -144,21 +157,55 @@ function Sphere(mass, cor, color) {
 	this.velocity = {vx:0, vy:0},
 	// The coefficient of restitution as value between 0 and 1.
 	this.cor = cor;
+	// The coefficient of the static friction as value between 0 and 1.
+	this.staticCOF = staticCOF,
+	// The coefficient of the sliding friction as value between 0 and 1.
+	this.slidingCOF = slidingCOF,
 	// Color of the sphere.
 	this.color = color,
 	// Updates the position based on the current acceleration.
 	// deltaT: time difference since the last calculation in seconds.
 	this.updatePosition = function(deltaT) {
-		this.velocity.vx += deltaT*accelerationValues.ax;
-		this.velocity.vy += deltaT*accelerationValues.ay;
+		var actualAccelerationX;
+		if(this.velocity.vx==0&&Math.abs(accelerationValues.ax)*this.mass<=Math.abs(normalForce.fnx)*this.staticCOF) { 
+			actualAccelerationX = 0;
+		} else {
+			var frictionForce = this.slidingCOF*normalForce.fnx/this.mass;
+			if(accelerationValues.ax<0) {
+				actualAccelerationX = accelerationValues.ax-frictionForce;
+			} else {
+				actualAccelerationX = accelerationValues.ax+frictionForce;
+			}
+		}
+		var nextVelocityX = this.velocity.vx+deltaT*actualAccelerationX;
+		if(nextVelocityX<0&&this.velocity.vx>0||nextVelocityX>0&&this.velocity.vx<0) {
+			nextVelocityX = 0;
+		}
+		var actualAccelerationY;
+		if(this.velocity.vy==0&&Math.abs(accelerationValues.ay)*this.mass<=Math.abs(normalForce.fny)*this.staticCOF) { 
+			actualAccelerationY = 0;
+		} else {
+			var frictionForce = this.slidingCOF*normalForce.fny/this.mass;
+			if(accelerationValues.ay<0) {
+				actualAccelerationY = accelerationValues.ay-frictionForce;
+			} else {
+				actualAccelerationY = accelerationValues.ay+frictionForce;
+			}
+		}
+		var nextVelocityY = this.velocity.vy+deltaT*actualAccelerationY;
+		if(nextVelocityY<0&&this.velocity.vy>0||nextVelocityY>0&&this.velocity.vy<0) {
+			nextVelocityY = 0;
+		}
+		this.velocity.vx = nextVelocityX;
+		this.velocity.vy = nextVelocityY;
 		var nextX = this.boundingBox.x+0.5*deltaT*this.velocity.vx;
 		var nextY = this.boundingBox.y+0.5*deltaT*this.velocity.vy;
 		if(nextX < this.walls.x) {
-			this.velocity.vx = this.cor*(0-this.velocity.vx);
+			this.velocity.vx = this.cor*-this.velocity.vx;
 			navigator.vibrate(deltaTvib);
 			nextX = this.walls.x;
 		} else if(nextX+2*this.boundingBox.radius >= this.walls.x+this.walls.width) {
-			this.velocity.vx = this.cor*(0-this.velocity.vx);
+			this.velocity.vx = this.cor*-this.velocity.vx;
 			navigator.vibrate(deltaTvib);
 			nextX = this.walls.x+this.walls.width-2*this.boundingBox.radius;
 		}
@@ -177,4 +224,4 @@ function Sphere(mass, cor, color) {
 }
 
 // Default sphere.
-var defaultSphere = new Sphere(1, 0.25, '#000000');
+var defaultSphere = new Sphere(1, 0.25, 0.2, 0.15, '#000000');
