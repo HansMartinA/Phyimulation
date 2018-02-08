@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="marm.mobile.phyimulation" version="0.0.7" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="marm.mobile.phyimulation" version="0.0.8" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Phyimulation</name>
     <description>
         Physics simulation (phyimulation) simulates a sphere on a smartphone's display with different physical effects applied.

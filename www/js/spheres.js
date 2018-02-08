@@ -54,6 +54,10 @@ function Sphere(mass, cor, staticCOF, slidingCOF, color) {
 	this.slidingCOF = slidingCOF,
 	// Color of the sphere.
 	this.color = color,
+	// Last vibration duration after the sphere has hit a wall in x direction.
+	this.lastTvibX = deltaTvib,
+	// Last vibration duration after the sphere has hit a wall in y direction.
+	this.lastTvibY = deltaTvib,
 	// Updates the position based on the current acceleration.
 	// deltaT: time difference since the last calculation in seconds.
 	this.updatePosition = function(deltaT) {
@@ -91,34 +95,44 @@ function Sphere(mass, cor, staticCOF, slidingCOF, color) {
 		
 		// Next position in x direction.
 		var next = this.boundingBox.x+0.5*deltaT*this.velocity.vx;
-		if(next < this.walls.x) {
-			invertX();
+		if(next <= this.walls.x) {
+			this.invertVX(this.lastTvibX);
+			this.lastTvibX = 0;
 			next = this.walls.x;
 		} else if(next+2*this.boundingBox.radius >= this.walls.x+this.walls.width) {
-			invertX();
+			this.invertVX(this.lastTvibX);
+			this.lastTvibX = 0;
 			next = this.walls.x+this.walls.width-2*this.boundingBox.radius;
+		} else {
+			this.lastTvibX = deltaTvib;
 		}
 		this.boundingBox.x = next;
 		// Next position in y direction.
 		next = this.boundingBox.y+0.5*deltaT*this.velocity.vy;
-		if(next < this.walls.y) {
-			invertY();
+		if(next <= this.walls.y) {
+			this.invertVY(this.lastTvibY);
+			this.lastTvibY = 0;
 			next = this.walls.y;
 		} else if(next+2*this.boundingBox.radius >= this.walls.y+this.walls.height) {
-			invertVY();
+			this.invertVY(this.lastTvibY);
+			this.lastTvibY = 0;
 			next = this.walls.y+this.walls.height-2*this.boundingBox.radius;
+		} else {
+			this.lastTvibY = deltaTvib;
 		}
 		this.boundingBox.y = next;
 	},
 	// Inverts the velocity in x direction when hitting a wall.
-	this.invertVX = function() {
+	// vib: vibration time.
+	this.invertVX = function(vib) {
 		this.velocity.vx = this.cor*-this.velocity.vx;
-		navigator.vibrate(deltaTvib);
+		navigator.vibrate(vib);
 	},
 	// Inverts the velocity in y direction when hitting a wall.
-	this.invertVY = function() {
+	// vib: vibration time.
+	this.invertVY = function(vib) {
 		this.velocity.vy = this.cor*-this.velocity.vy;
-		navigator.vibrate(deltaTvib);
+		navigator.vibrate(vib);
 	}
 }
 
