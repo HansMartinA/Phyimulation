@@ -43,8 +43,7 @@ function beginDrawing(sphere) {
 	watchID = navigator.accelerometer.watchAcceleration(updateAcceleration, onAccelerometerError, {frequency:deltaTa});
 	window.addEventListener("deviceorientation", updateNormalForce, true);
 	canvas = document.getElementById("simulationArea");
-	currentSphere.walls.width = canvas.width;
-	currentSphere.walls.height = canvas.height;
+	currentSphere.setWall(0, 0, canvas.width, canvas.height);
 	lastDraw = Date.now();
 	requestID = window.requestAnimationFrame(drawFrame, canvas);
 }
@@ -78,8 +77,8 @@ function drawFrame() {
 
 // Updates the acceleration with a current acceleration value retrieved by the accelerometer.
 function updateAcceleration(acceleration) {
-	currentSphere.acceleration.ax = -acceleration.x;
-	currentSphere.acceleration.ay = acceleration.y;
+	currentSphere.x.acceleration = -acceleration.x;
+	currentSphere.y.acceleration = acceleration.y;
 }
 
 // Called when there is an error on retrieving the acceleration. Currently, not implemented.
@@ -88,6 +87,5 @@ function onAccelerometerError() {
 
 // Updates the normal force acting on the current sphere based upon the current device orientation.
 function updateNormalForce(event) {
-	currentSphere.normalForce.fnx = -Math.abs(Math.cos(event.beta*Math.PI/180)*currentSphere.mass*g);
-	currentSphere.normalForce.fny = -Math.abs(Math.cos(event.gamma*Math.PI/180)*currentSphere.mass*g);
+	currentSphere.setRotation(event.gamma, -event.beta);
 }

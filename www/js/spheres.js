@@ -31,112 +31,117 @@ var g = 9.81;
 // mass: mass of the sphere in kilogramme. Has to be a positive value.
 // cor: coefficient of restitution. Must be between 0 and 1.
 // staticCOF: coefficient of the static friction. Must be between 0 and 1.
-// slidingCOF: coefficient of the sliding friction. Must be between 0 and 1.
+// slidingCOF: coefficient of the sliding friction. Must be between 0 and 1 and less than the coefficient of the static friction.
 // color: color of the sphere. Has to be a valid html color.
 function Sphere(mass, cor, staticCOF, slidingCOF, accelerationScaling, color) {
 	// The bounding box defines the position of the sphere.
 	this.boundingBox = {x:0, y:0, radius:12.5},
-	// The wall defines the area in which the sphere moves.
-	this.walls = {x:0, y:0, width:0, height:0};
 	// Mass of the sphere in kilogramme.
 	this.mass = mass,
-	// Velocity of the sphere in meters per second.
-	this.velocity = {vx:0, vy:0},
-	// Contains the current acceleration of the sphere in meters per second squared.
-	this.acceleration = {ax:0, ay:0};
+	// All values regarding the x direction are stored in x.
+	this.x = new CoordinateProperties(),
+	// All values regarding the y direction are stored in y.
+	this.y = new CoordinateProperties(),
 	// Scaling factor for the acceleration to increase or decrease its value.
 	this.accelerationScaling = accelerationScaling;
-	// Stores the current normal force acting on the sphere.
-	this.normalForce = {fnx:0, fny:0};
 	// The coefficient of restitution as value between 0 and 1.
-	this.cor = cor;
+	this.cor = cor,
 	// The coefficient of the static friction as value between 0 and 1.
 	this.staticCOF = staticCOF,
-	// The coefficient of the sliding friction as value between 0 and 1.
+	// The coefficient of the sliding friction as value between 0 and 1 and less than the coefficient of the static friction.
 	this.slidingCOF = slidingCOF,
 	// Color of the sphere.
 	this.color = color,
-	// Last vibration duration after the sphere has hit a wall in x direction.
-	this.lastTvibX = deltaTvib,
-	// Last vibration duration after the sphere has hit a wall in y direction.
-	this.lastTvibY = deltaTvib,
 	// Updates the position based on the current acceleration.
 	// deltaT: time difference since the last calculation in seconds.
 	this.updatePosition = function(deltaT) {
-		// Friction calculation in x direction.
+		this.boundingBox.x = this.updateDirection(this.x, this.boundingBox.x, deltaT);
+		this.boundingBox.y = this.updateDirection(this.y, this.boundingBox.y, deltaT);
+	},
+	// Updates the position for one direction.
+	// coordProps: properties object representing the current direction.
+	// coord: the current coordinate in the current direction.
+	// deltaT: time difference since the last calculation in seconds.
+	// Returns the new position. 
+	this.updateDirection = function(coordProps, coord, deltaT) {
+		// Friction calculation.
 		var actualAcceleration;
-		if(this.velocity.vx==0&&Math.abs(this.acceleration.ax)*this.mass<=Math.abs(this.normalForce.fnx)*this.staticCOF) { 
+		if(coordProps.velocity==0&&Math.abs(coordProps.acceleration)*this.mass<=Math.abs(coordProps.normalForce)*this.staticCOF) { 
 			actualAcceleration = 0;
 		} else {
-			var frictionForce = this.slidingCOF*this.normalForce.fnx/this.mass;
-			if(this.acceleration.ax<0) {
+			var frictionForce = this.slidingCOF*coordProps.normalForce/this.mass;
+			if(coordProps.acceleration<0) {
 				frictionForce = -frictionForce;
 			}
-			actualAcceleration = this.acceleration.ax+frictionForce;
+			actualAcceleration = coordProps.acceleration+frictionForce;
 		}
-		var nextVelocity = this.velocity.vx+deltaT*actualAcceleration*this.accelerationScaling;
-		if(nextVelocity<0&&this.velocity.vx>0||nextVelocity>0&&this.velocity.vx<0) {
+		var nextVelocity = coordProps.velocity+deltaT*actualAcceleration*this.accelerationScaling;
+		if(coordProps.velocity<0&&nextVelocity>0||coordProps.velocity>0&&nextVelocity<0) {
 			nextVelocity = 0;
 		}
-		this.velocity.vx = nextVelocity;
-		// Friction calculation in y direction.
-		if(this.velocity.vy==0&&Math.abs(this.acceleration.ay)*this.mass<=Math.abs(this.normalForce.fny)*this.staticCOF) { 
-			actualAcceleration = 0;
+		coordProps.velocity = nextVelocity;
+		// Next position.
+		var next = coord+0.5*deltaT*coordProps.velocity;
+		if(next <= coordProps.wall.f) {
+			this.invertVelocity(coordProps);
+			next = coordProps.wall.f;
+		} else if(next+2*this.boundingBox.radius >= coordProps.wall.s) {
+			this.invertVelocity(coordProps);
+			next = coordProps.wall.s-2*this.boundingBox.radius;
 		} else {
-			var frictionForce = this.slidingCOF*this.normalForce.fny/this.mass;
-			if(this.acceleration.ay<0) {
-				frictionForce = -frictionForce;
-			}
-			actualAcceleration = this.acceleration.ay+frictionForce;
+			coordProps.lastTvib = deltaTvib;
 		}
-		nextVelocity = this.velocity.vy+deltaT*actualAcceleration*this.accelerationScaling;
-		if(nextVelocity<0&&this.velocity.vy>0||nextVelocity>0&&this.velocity.vy<0) {
-			nextVelocity = 0;
-		}
-		this.velocity.vy = nextVelocity;
-		
-		// Next position in x direction.
-		var next = this.boundingBox.x+0.5*deltaT*this.velocity.vx;
-		if(next <= this.walls.x) {
-			this.invertVX(this.lastTvibX);
-			this.lastTvibX = 0;
-			next = this.walls.x;
-		} else if(next+2*this.boundingBox.radius >= this.walls.x+this.walls.width) {
-			this.invertVX(this.lastTvibX);
-			this.lastTvibX = 0;
-			next = this.walls.x+this.walls.width-2*this.boundingBox.radius;
-		} else {
-			this.lastTvibX = deltaTvib;
-		}
-		this.boundingBox.x = next;
-		// Next position in y direction.
-		next = this.boundingBox.y+0.5*deltaT*this.velocity.vy;
-		if(next <= this.walls.y) {
-			this.invertVY(this.lastTvibY);
-			this.lastTvibY = 0;
-			next = this.walls.y;
-		} else if(next+2*this.boundingBox.radius >= this.walls.y+this.walls.height) {
-			this.invertVY(this.lastTvibY);
-			this.lastTvibY = 0;
-			next = this.walls.y+this.walls.height-2*this.boundingBox.radius;
-		} else {
-			this.lastTvibY = deltaTvib;
-		}
-		this.boundingBox.y = next;
+		return next;
 	},
-	// Inverts the velocity in x direction when hitting a wall.
-	// vib: vibration time.
-	this.invertVX = function(vib) {
-		this.velocity.vx = this.cor*-this.velocity.vx;
-		navigator.vibrate(vib);
+	// Inverts the velocity in a direction when hitting a wall.
+	// coordProps: property object of the current direction.
+	this.invertVelocity = function(coordProps) {
+		coordProps.velocity = this.cor*-coordProps.velocity;
+		navigator.vibrate(coordProps.lastTvib);
+		coordProps.lastTvib = 0;
 	},
-	// Inverts the velocity in y direction when hitting a wall.
-	// vib: vibration time.
-	this.invertVY = function(vib) {
-		this.velocity.vy = this.cor*-this.velocity.vy;
-		navigator.vibrate(vib);
+	// Sets the current rotation.
+	// x: rotation in x direction.
+	// y: rotation in y direction.
+	this.setRotation = function(x, y) {
+		this.x.setRotation(x, this.mass);
+		this.y.setRotation(y, this.mass);
+	},
+	// Sets the wall for this sphere.
+	// x: beginning of the wall in x direction.
+	// y: beginning of the wall in y direction.
+	// width: width of the wall.
+	// height: height of the wall.
+	this.setWall = function(x, y, width, height) {
+		this.x.wall.f = x;
+		this.x.wall.s = x+width;
+		this.y.wall.f = y;
+		this.y.wall.s = y+height;
+	}
+}
+
+// Constructor for objects containing different values and properties for a direction.
+function CoordinateProperties() {
+	// The wall of the direction where f is the first, lower coordinate and s the second, higher one.
+	this.wall = {f:0, s:0},
+	// Velocity in meters per second.
+	this.velocity = 0,
+	// Contains the current acceleration in meters per second squared.
+	this.acceleration = 0,
+	// The current rotation in degrees.
+	this.rotation = 0,
+	// Stores the current normal force.
+	this.normalForce = 0,
+	// Last vibration duration after the sphere has hit a wall.
+	this.lastTvib = deltaTvib,
+	// Sets the rotation.
+	// rotation: the new rotation.
+	// mass: mass of the object this object belongs to.
+	this.setRotation = function(rotation, mass) {
+		this.rotation = rotation;
+		this.normalForce = -Math.abs(Math.cos(rotation*Math.PI/180)*mass*g);
 	}
 }
 
 // Default sphere.
-var defaultSphere = new Sphere(10, 0.35, 0.15, 0.2, 300, "#000099");
+var defaultSphere = new Sphere(10, 0.35, 0.17, 0.12, 150, "#000000");
