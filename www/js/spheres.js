@@ -33,7 +33,7 @@ var g = 9.81;
 // staticCOF: coefficient of the static friction. Must be between 0 and 1.
 // slidingCOF: coefficient of the sliding friction. Must be between 0 and 1.
 // color: color of the sphere. Has to be a valid html color.
-function Sphere(mass, cor, staticCOF, slidingCOF, color) {
+function Sphere(mass, cor, staticCOF, slidingCOF, accelerationScaling, color) {
 	// The bounding box defines the position of the sphere.
 	this.boundingBox = {x:0, y:0, radius:12.5},
 	// The wall defines the area in which the sphere moves.
@@ -44,6 +44,8 @@ function Sphere(mass, cor, staticCOF, slidingCOF, color) {
 	this.velocity = {vx:0, vy:0},
 	// Contains the current acceleration of the sphere in meters per second squared.
 	this.acceleration = {ax:0, ay:0};
+	// Scaling factor for the acceleration to increase or decrease its value.
+	this.accelerationScaling = accelerationScaling;
 	// Stores the current normal force acting on the sphere.
 	this.normalForce = {fnx:0, fny:0};
 	// The coefficient of restitution as value between 0 and 1.
@@ -72,7 +74,7 @@ function Sphere(mass, cor, staticCOF, slidingCOF, color) {
 			}
 			actualAcceleration = this.acceleration.ax+frictionForce;
 		}
-		var nextVelocity = this.velocity.vx+deltaT*actualAcceleration;
+		var nextVelocity = this.velocity.vx+deltaT*actualAcceleration*this.accelerationScaling;
 		if(nextVelocity<0&&this.velocity.vx>0||nextVelocity>0&&this.velocity.vx<0) {
 			nextVelocity = 0;
 		}
@@ -87,7 +89,7 @@ function Sphere(mass, cor, staticCOF, slidingCOF, color) {
 			}
 			actualAcceleration = this.acceleration.ay+frictionForce;
 		}
-		nextVelocity = this.velocity.vy+deltaT*actualAcceleration;
+		nextVelocity = this.velocity.vy+deltaT*actualAcceleration*this.accelerationScaling;
 		if(nextVelocity<0&&this.velocity.vy>0||nextVelocity>0&&this.velocity.vy<0) {
 			nextVelocity = 0;
 		}
@@ -137,4 +139,4 @@ function Sphere(mass, cor, staticCOF, slidingCOF, color) {
 }
 
 // Default sphere.
-var defaultSphere = new Sphere(1, 0.25, 0.2, 0.15, '#000000');
+var defaultSphere = new Sphere(10, 0.35, 0.15, 0.2, 300, "#000099");
