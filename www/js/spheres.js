@@ -70,16 +70,12 @@ function Sphere(mass, cor, staticCOF, slidingCOF, accelerationScaling, color) {
 			actualAcceleration = 0;
 		} else {
 			var frictionForce = this.slidingCOF*coordProps.normalForce/this.mass;
-			if(coordProps.acceleration<0) {
+			if(coordProps.velocity<0) {
 				frictionForce = -frictionForce;
 			}
 			actualAcceleration = coordProps.acceleration+frictionForce;
 		}
-		var nextVelocity = coordProps.velocity+deltaT*actualAcceleration*this.accelerationScaling;
-		if(coordProps.velocity<0&&nextVelocity>0||coordProps.velocity>0&&nextVelocity<0) {
-			nextVelocity = 0;
-		}
-		coordProps.velocity = nextVelocity;
+		coordProps.velocity = coordProps.velocity+deltaT*actualAcceleration*this.accelerationScaling;
 		// Next position.
 		var next = coord+0.5*deltaT*coordProps.velocity;
 		if(next <= coordProps.wall.f) {
@@ -144,4 +140,4 @@ function CoordinateProperties() {
 }
 
 // Default sphere.
-var defaultSphere = new Sphere(10, 0.35, 0.17, 0.12, 150, "#000000");
+var defaultSphere = new Sphere(10, 0.35, 0.12, 0.1, 150, "#000000");
