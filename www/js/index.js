@@ -25,24 +25,24 @@
 var app = {
     // Application Constructor
     initialize: function() {
-    	canvas = document.getElementById("simulationArea");
-    	window.addEventListener("resize", resizeCanvas);
-    	resizeCanvas();
+//    	canvas = document.getElementById("simulationArea");
+//    	window.addEventListener("resize", resizeCanvas);
+//    	resizeCanvas();
         document.addEventListener("deviceready", this.onDeviceReady.bind(this), false);
     },
     // deviceready Event Handler
     onDeviceReady: function() {
     	document.addEventListener("pause", this.onPause, false);
     	document.addEventListener("resume", this.onResume, false);
-    	beginDrawing(defaultSphere);
+//    	beginDrawing(defaultSphere);
     },
     // pause Event Handler
     onPause: function() {
-    	stopDrawing();
+//    	stopDrawing();
     },
     // resume Event Handler
     onResume: function() {
-    	beginDrawing(defaultSphere);
+//    	beginDrawing(defaultSphere);
     }
 };
 app.initialize();

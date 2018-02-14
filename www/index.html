@@ -34,12 +34,52 @@ limitations under the License.
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
         <link rel="stylesheet" type="text/css" href="css/index.css">
+		<link rel="stylesheet" href="css/jquery-mobile/jquery.mobile-1.4.5.min.css" />
+		<link rel="stylesheet" href="css/waves/waves.min.css" />
+		<link rel="stylesheet" href="css/nd2/nativedroid2.css" />
         <title>Phyimulation</title>
     </head>
     <body>
-        <div class="app">
-            <canvas id="simulationArea" />
+        <div data-role="page">
+			<div data-role="header" data-position="fixed">
+				<a href="#" class="ui-btn ui-btn-left" id="infoButton"><i class="zmdi zmdi-arrow-back" id="infoButton"></i></a>
+        		<h1>Phyimulation</h1> 
+        		<a href="#" class="ui-btn ui-btn-right" id="infoButton"><i class="zmdi zmdi-info-outline" id="infoButton"></i></a>
+        		<ul data-role="nd2tabs" data-swipe="true">
+					<li data-tab="spheres" data-tab-active="true">Spheres</li>
+					<li data-tab="settings">Settings</li>
+					<li data-tab="help">Help</li>
+					<li data-tab="info">About</li>
+				</ul>
+        	</div>
+        	<div role="main" class="ui-content" data-inset="false">
+        		<div data-role="nd2tab" data-tab="spheres">
+	        		<ul data-role="listview" data-icon="false">
+	        			<li data-role="list-divider"></li>
+						<li>
+							<a href="#">
+								<img src="img/profile1.png" class="ui-thumbnail" id="profImg" />
+								<h2>Default sphere</h2>
+							</a>
+						</li>
+					</ul>
+					<p>A built-in sphere simulating different physical effects: collision, friction and motion based on the accelerometer.</p>
+	        		<canvas id="simulationArea" />
+				</div>
+				<div data-role="nd2tab" data-tab="settings">
+				</div>
+				<div data-role="nd2tab" data-tab="help">
+				</div>
+				<div data-role="nd2tab" data-tab="info">
+				</div>
+        	</div>
         </div>
+        <script src="js/jquery/jquery.min.js"></script>
+		<script src="js/jquery-ui/jquery-ui.min.js"></script>
+		<script src="js/jquery-mobile/jquery.mobile-1.4.5.min.js"></script>
+		<script src="js/waves/waves.min.js"></script>
+		<script src="js/nd2/nativedroid2.js"></script>
+		<script src="js/nd2/nd2settings.js"></script>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/spheres.js"></script>
         <script type="text/javascript" src="js/drawing.js"></script>
