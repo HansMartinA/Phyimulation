@@ -39,8 +39,8 @@ body {
  height: 100%;
 }
 
-#infoButton {
- display: none;
+#hideOnMenu0, #hideOnMenu1 {
+ opacity: 0.0;
 }
 
 #profImg {
@@ -51,4 +51,36 @@ body {
 canvas {
  background:white;
  display: none;
+}
+
+@keyframes slideToCanvasHide {
+ to {
+  transform: translateY(-100%);
+  opacity: 0.0;
+  display: none;
+  width: 0px;
+  height: 0px;
+ }
+}
+
+@keyframes slideToMenuShow {
+ from {
+  transform: translateY(-100%);
+  opacity: 0.0;
+  display: none;
+  width: 0px;
+  height: 0px;
+ }
+}
+
+@keyframes slideToCanvasShow {
+ to {
+  opacity: 1.0;
+ }
+}
+
+@keyframes slideToMenuHide {
+ from {
+  opacity: 1.0;
+ }
 }

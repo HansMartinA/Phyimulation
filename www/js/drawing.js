@@ -54,6 +54,7 @@ function stopDrawing() {
 	window.cancelAnimationFrame(requestID);
 	requestID = undefined;
 	navigator.accelerometer.clearWatch(watchID);
+	window.removeEventListener("deviceorientation", updateNormalForce);
 }
 
 // Draws the sphere on a frame.
