@@ -34,6 +34,11 @@ body {
  padding:0px;
 }
 
+canvas {
+ background:white;
+ display: none;
+}
+
 #ic_logo {
  width: 100%;
  height: 100%;
@@ -43,14 +48,13 @@ body {
  opacity: 0.0;
 }
 
+#hiddenP {
+ opacity: 0.0;
+}
+
 #profImg {
  width: 4em;
  height: 4em;
-}
-
-canvas {
- background:white;
- display: none;
 }
 
 @keyframes slideToCanvasHide {

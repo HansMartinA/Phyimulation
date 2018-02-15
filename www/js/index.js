@@ -84,7 +84,6 @@ var app = {
     	for(var i=0; i<2; i++) {
     		document.getElementById("hideOnDraw"+i).style.animation = "slideToMenuShow 100ms ease-out 0s 1 normal forwards";
     	}
-    	document.getElementById("mainArea").style.transform = "translateY(25%)";
     }
 };
 app.initialize();
