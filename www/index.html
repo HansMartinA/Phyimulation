@@ -30,6 +30,7 @@ limitations under the License.
                 * Enable inline JS: add 'unsafe-inline' to default-src
         -->
         <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+        <meta charset="utf-8"/>
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
@@ -47,10 +48,10 @@ limitations under the License.
         		<h1>Phyimulation</h1> 
         		<a href="#" class="ui-btn ui-btn-right" id="hideOnMenu1" ><i class="zmdi zmdi-info-outline"></i></a>
         		<ul data-role="nd2tabs" data-swipe="true" id="hideOnDraw1">
-					<li data-tab="spheres" data-tab-active="true">Spheres</li>
-					<li data-tab="settings">Settings</li>
-					<li data-tab="help">Help</li>
-					<li data-tab="info">About</li>
+					<li data-tab="spheres" data-tab-active="true" id="tabSpheres"></li>
+					<li data-tab="settings" id="tabSettings"></li>
+					<li data-tab="help" id="tabHelp"></li>
+					<li data-tab="info" id="tabInfo"></li>
 				</ul>
 				<canvas id="simulationArea" />
         	</div>
@@ -59,13 +60,13 @@ limitations under the License.
 	        		<ul data-role="listview" data-icon="false">
 	        			<li data-role="list-divider"></li>
 						<li>
-							<a href="#simulationArea" id="profile1Link" data-transition="slideup">
+							<a href="#" id="profile1Link" data-transition="slideup">
 								<img src="img/profile1.png" class="ui-thumbnail" id="profImg" />
-								<h2>Default sphere</h2>
+								<h2 id="prof1name"></h2>
 							</a>
 						</li>
 					</ul>
-					<p>A built-in sphere simulating different physical effects: collision, friction and motion based on the accelerometer.</p>
+					<p id="prof1des"></p>
 				</div>
 				<div data-role="nd2tab" data-tab="settings">
 				</div>
@@ -84,6 +85,7 @@ limitations under the License.
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/spheres.js"></script>
         <script type="text/javascript" src="js/drawing.js"></script>
+        <script type="text/javascript" src="js/language.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
     </body>
 </html>

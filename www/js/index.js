@@ -31,6 +31,7 @@ var app = {
     onDeviceReady: function() {
     	document.addEventListener("pause", this.onPause, false);
     	document.addEventListener("resume", this.onResume, false);
+    	navigator.globalization.getPreferredLanguage(onLanguageUpdate, onLanguageUpdateFailed);
     	app.header = document.getElementById("headerArea");
     	app.oldColor = app.header.style.color;
     	canvas = document.getElementById("simulationArea");

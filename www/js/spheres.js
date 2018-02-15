@@ -31,7 +31,7 @@ var g = 9.81;
 // mass: mass of the sphere in kilogramme. Has to be a positive value.
 // cor: coefficient of restitution. Must be between 0 and 1.
 // staticCOF: coefficient of the static friction. Must be between 0 and 1.
-// slidingCOF: coefficient of the sliding friction. Must be between 0 and 1 and less than the coefficient of the static friction.
+// slidingCOF: coefficient of the sliding friction. Must be between 0 and 1.
 // color: color of the sphere. Has to be a valid html color.
 function Sphere(mass, cor, staticCOF, slidingCOF, accelerationScaling, color) {
 	// The bounding box defines the position of the sphere.
@@ -48,7 +48,7 @@ function Sphere(mass, cor, staticCOF, slidingCOF, accelerationScaling, color) {
 	this.cor = cor,
 	// The coefficient of the static friction as value between 0 and 1.
 	this.staticCOF = staticCOF,
-	// The coefficient of the sliding friction as value between 0 and 1 and less than the coefficient of the static friction.
+	// The coefficient of the sliding friction as value between 0 and 1.
 	this.slidingCOF = slidingCOF,
 	// Color of the sphere.
 	this.color = color,
