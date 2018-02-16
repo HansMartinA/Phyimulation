@@ -141,3 +141,9 @@ function CoordinateProperties() {
 
 // Default sphere.
 var defaultSphere = new Sphere(10, 0.35, 0.12, 0.1, 150, "#000000");
+// Free sphere.
+var freeSphere = new Sphere(1, 0.85, 0.0, 0.0, 5000, "#000099");
+// Heavy sphere.
+var heavySphere = new Sphere(100, 1.0, 0.45, 0.6, 50, "#990000");
+// Inelastic sphere.
+var inelasticSphere = new Sphere(10, 0.0, 0.12, 0.1, 150, "#999900");

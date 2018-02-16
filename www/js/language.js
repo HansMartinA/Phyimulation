@@ -31,6 +31,15 @@ var en = {
 	profile1_name: "Default sphere",
 	profile1_description: "A built-in sphere simulating different physical effects: collision, friction and motion based on the accelerometer.",
 	profile1_link: "Start Simulation",
+	profile2_name: "Free sphere",
+	profile2_description: "A sphere without any friction.",
+	profile2_link: "Start Simulation",
+	profile3_name: "Heavy sphere",
+	profile3_description: "Weighting 100 kg, this sphere has a moderate friction and is completely elastic. When it hits a wall, there is no power loss.",
+	profile3_link: "Start Simulation",
+	profile4_name: "Inelastic sphere",
+	profile4_description: "A completely inelastic sphere. When it hits a wall, all power is absorbed.",
+	profile4_link: "Start Simulation",
 	text_help_p1: "What is Phyimulation?",
 	text_help_p1_content: "Physics simulation (Phyimulation) simulates a sphere in a box on a smartphone's display. Different physical effects are applied on it: collision, friction and motion based on the smartphones's accelerometer.",
 	text_help_p2: "What can I do?",
@@ -56,6 +65,15 @@ var de = {
 	profile1_name: "Standard-Kugel",
 	profile1_description: "Eine eingebaute Kugel, die verschiedene physikalische Effekte simuliert: Stöße, Reibung und Bewegung, basierend auf dem Beschleunigungssensor.",
 	profile1_link: "Starte Simulation",
+	profile2_name: "Freie Kugel",
+	profile2_description: "Eine Kugel ohne Reibung.",
+	profile2_link: "Starte Simulation",
+	profile3_name: "Schwere Kugel",
+	profile3_description: "Diese Kugel, die 100 kg wiegt, hat eine moderate Reibung und ist komplett elastisch. Trifft sie auf eine Wand, gibt es keinen Energieverlust.",
+	profile3_link: "Starte Simulation",
+	profile4_name: "Inelastische Kugel",
+	profile4_description: "Eine komplett inelastische Kugel. Trifft sie auf eine Wand, wird die komplette Energie absorbiert.",
+	profile4_link: "Starte Simulation",
 	text_help_p1: "Was ist Phyimulation?",
 	text_help_p1_content: "Physik-Simulation (Phyimulation) simuliert eine Kugel in einer Box auf dem Bildschirm des Smartphones. Verschiedene physikalische Effekte werden dabei auf die Kugel angewandt: Stöße, Reibung und Bewegung, die auf dem Beschleunigungssensor des Smartphones beruht.",
 	text_help_p2: "Was kann ich machen?",
@@ -82,6 +100,15 @@ function setLanguage(language) {
 	document.getElementById("prof1name").innerHTML = language.profile1_name;
 	document.getElementById("prof1des").innerHTML = language.profile1_description;
 	document.getElementById("profile1Link").innerHTML = language.profile1_link;
+	document.getElementById("prof2name").innerHTML = language.profile2_name;
+	document.getElementById("prof2des").innerHTML = language.profile2_description;
+	document.getElementById("profile2Link").innerHTML = language.profile2_link;
+	document.getElementById("prof3name").innerHTML = language.profile3_name;
+	document.getElementById("prof3des").innerHTML = language.profile3_description;
+	document.getElementById("profile3Link").innerHTML = language.profile3_link;
+	document.getElementById("prof4name").innerHTML = language.profile4_name;
+	document.getElementById("prof4des").innerHTML = language.profile4_description;
+	document.getElementById("profile4Link").innerHTML = language.profile4_link;
 	document.getElementById("helpTextP1").innerHTML = language.text_help_p1;
 	document.getElementById("helpTextP1Content").innerHTML = language.text_help_p1_content;
 	document.getElementById("helpTextP2").innerHTML = language.text_help_p2;
@@ -114,7 +141,7 @@ function onLanguageUpdateFailed() {
 }
 
 // The info text. It is equal for all languages.
-var text_info = "<h2>Phyimulation 0.1.10</h2>"+
+var text_info = "<h2>Phyimulation 0.2.0</h2>"+
 "<p></p>"+
 "<p>Copyright 2018 Martin Armbruster</p>"+
 "<p></p>"+

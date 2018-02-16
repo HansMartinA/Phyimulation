@@ -38,6 +38,9 @@ var app = {
     	canvas.width = window.innerWidth;
     	canvas.height = window.innerHeight-65;
     	document.getElementById("profile1Link").addEventListener("click", function() { app.onSphereSelected(defaultSphere); });
+    	document.getElementById("profile2Link").addEventListener("click", function() { app.onSphereSelected(freeSphere); });
+    	document.getElementById("profile3Link").addEventListener("click", function() { app.onSphereSelected(heavySphere); });
+    	document.getElementById("profile4Link").addEventListener("click", function() { app.onSphereSelected(inelasticSphere); });
     	document.getElementById("hideOnMenu0").addEventListener("click", this.onBackToMenu);
     },
     // resume Event Handler
