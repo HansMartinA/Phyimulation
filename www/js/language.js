@@ -40,6 +40,15 @@ var en = {
 	profile4_name: "Inelastic sphere",
 	profile4_description: "A completely inelastic sphere. When it hits a wall, all power is absorbed.",
 	profile4_link: "Start Simulation",
+	set_save: "Save",
+	set_restore: "Restore default settings",
+	set_mass: "Mass (kg):",
+	set_cor: "Coefficient of restitution for collisions (will be divided by 100):",
+	set_csf: "Coefficient of static friction (will be divided by 100):",
+	set_cslf: "Coefficient of sliding friction (will be divided by 100):",
+	set_scale: "Scaling factor:",
+	set_scale_note: "Note: the scaling factor is directly applied to the acceleration. So, please be careful with it.",
+	set_color: "Color:",
 	text_help_p1: "What is Phyimulation?",
 	text_help_p1_content: "Physics simulation (Phyimulation) simulates a sphere in a box on a smartphone's display. Different physical effects are applied on it: collision, friction and motion based on the smartphones's accelerometer.",
 	text_help_p2: "What can I do?",
@@ -74,6 +83,15 @@ var de = {
 	profile4_name: "Inelastische Kugel",
 	profile4_description: "Eine komplett inelastische Kugel. Trifft sie auf eine Wand, wird die komplette Energie absorbiert.",
 	profile4_link: "Starte Simulation",
+	set_save: "Speichern",
+	set_restore: "Standard-Einstellungen wiederherstellen",
+	set_mass: "Masse (kg):",
+	set_cor: "Stoßfaktor für Stöße (wird durch 100 geteilt):",
+	set_csf: "Haftreibungskoeffizient (wird durch 100 geteilt):",
+	set_cslf: "Gleitreibungskoeffizient (wird durch 100 geteilt):",
+	set_scale: "Skalierungsfaktor:",
+	set_scale_note: "Hinweis: der Skalierungsfaktor wird direkt auf die Beschleunigung angewandt. Seien Sie deshalb bitte vorsichtig damit.",
+	set_color: "Farbe:",
 	text_help_p1: "Was ist Phyimulation?",
 	text_help_p1_content: "Physik-Simulation (Phyimulation) simuliert eine Kugel in einer Box auf dem Bildschirm des Smartphones. Verschiedene physikalische Effekte werden dabei auf die Kugel angewandt: Stöße, Reibung und Bewegung, die auf dem Beschleunigungssensor des Smartphones beruht.",
 	text_help_p2: "Was kann ich machen?",
@@ -109,6 +127,15 @@ function setLanguage(language) {
 	document.getElementById("prof4name").innerHTML = language.profile4_name;
 	document.getElementById("prof4des").innerHTML = language.profile4_description;
 	document.getElementById("profile4Link").innerHTML = language.profile4_link;
+	document.getElementById("saveSettings").innerHTML = language.set_save;
+	document.getElementById("restoreSettings").innerHTML = language.set_restore;
+	document.getElementById("massSliderLabel").innerHTML = language.set_mass;
+	document.getElementById("corSliderLabel").innerHTML = language.set_cor;
+	document.getElementById("csfSliderLabel").innerHTML = language.set_csf;
+	document.getElementById("cslfSliderLabel").innerHTML = language.set_cslf;
+	document.getElementById("scaleSliderLabel").innerHTML = language.set_scale;
+	document.getElementById("scaleSliderNote").innerHTML = language.set_scale_note;
+	document.getElementById("colorLabel").innerHTML = language.set_color;
 	document.getElementById("helpTextP1").innerHTML = language.text_help_p1;
 	document.getElementById("helpTextP1Content").innerHTML = language.text_help_p1_content;
 	document.getElementById("helpTextP2").innerHTML = language.text_help_p2;
@@ -141,7 +168,7 @@ function onLanguageUpdateFailed() {
 }
 
 // The info text. It is equal for all languages.
-var text_info = "<h2>Phyimulation 0.2.0</h2>"+
+var text_info = "<h2>Phyimulation 0.2.1</h2>"+
 "<p></p>"+
 "<p>Copyright 2018 Martin Armbruster</p>"+
 "<p></p>"+
