@@ -30,10 +30,11 @@ var en = {
 	tab_info: "About",
 	profile1_name: "Default sphere",
 	profile1_description: "A built-in sphere simulating different physical effects: collision, friction and motion based on the accelerometer.",
+	profile1_link: "Start Simulation",
 	text_help_p1: "What is Phyimulation?",
 	text_help_p1_content: "Physics simulation (Phyimulation) simulates a sphere in a box on a smartphone's display. Different physical effects are applied on it: collision, friction and motion based on the smartphones's accelerometer.",
 	text_help_p2: "What can I do?",
-	text_help_p2_content: "When you start Phyimulation, you can select a sphere from different pre-built spheres in the spheres screen (\"Spheres\" tab) and just have to click on it to start the simulation. In addition, help (\"Help\" tab) and more information about Pyhimulation (\"About\" tab) can be shown.",
+	text_help_p2_content: "When you start Phyimulation, you can select a sphere from different pre-built spheres in the spheres screen (\"Spheres\" tab) and just have to click on the \"Start Simulation\" button to start the simulation. In addition, help (\"Help\" tab) and more information about Pyhimulation (\"About\" tab) can be shown.",
 	text_help_p3: "Which pre-built spheres are there?",
 	text_help_p3_content_a: "Currently, you can select from these pre-built spheres:",
 	text_help_p3_content_l1: "- default sphere (10 kg) which simulates collision with a coefficient of restitution (cor) of 0.35 and friction with a coefficient of static friction (csf) of 0.12 and a coefficient of sliding friction (cslf) of 0.1.",
@@ -54,10 +55,11 @@ var de = {
 	tab_info: "Info",
 	profile1_name: "Standard-Kugel",
 	profile1_description: "Eine eingebaute Kugel, die verschiedene physikalische Effekte simuliert: Stöße, Reibung und Bewegung, basierend auf dem Beschleunigungssensor.",
+	profile1_link: "Starte Simulation",
 	text_help_p1: "Was ist Phyimulation?",
 	text_help_p1_content: "Physik-Simulation (Phyimulation) simuliert eine Kugel in einer Box auf dem Bildschirm des Smartphones. Verschiedene physikalische Effekte werden dabei auf die Kugel angewandt: Stöße, Reibung und Bewegung, die auf dem Beschleunigungssensor des Smartphones beruht.",
 	text_help_p2: "Was kann ich machen?",
-	text_help_p2_content: "Wenn Sie Phyimulation starten, können Sie eine Kugel aus vorgefertigten Kugeln im \"Kugel\" Tab auswählen. Mit einem Klick bzw. einer Berührung wird die Simulation gestartet. Zusätzlich stehen eine Hilfe (\"Hilfe\" Tab) und mehr Informationen über Phyimulation (\"Info\" Tab) bereit.",
+	text_help_p2_content: "Wenn Sie Phyimulation starten, können Sie eine Kugel aus vorgefertigten Kugeln im \"Kugel\" Tab auswählen. Mit einem Klick bzw. einer Berührung des \"Starte Simulation\" Knopfes wird die Simulation gestartet. Zusätzlich stehen eine Hilfe (\"Hilfe\" Tab) und mehr Informationen über Phyimulation (\"Info\" Tab) bereit.",
 	text_help_p3: "Welche vorgefertigten Kugeln gibt es?",
 	text_help_p3_content_a: "Aktuell können Sie aus den folgenden Kugeln auswählen:",
 	text_help_p3_content_l1: "- Standard-Kugel (10 kg), die Stöße mit einem Stoßfaktor (cor) von 0.35 und Reibung mit einem Haftreibungsfaktor (csf) von 0.12 und Gleitreibungsfaktor (cslf) von 0.1 simuliert.",
@@ -79,6 +81,7 @@ function setLanguage(language) {
 	document.getElementById("tabInfo").innerHTML = language.tab_info;
 	document.getElementById("prof1name").innerHTML = language.profile1_name;
 	document.getElementById("prof1des").innerHTML = language.profile1_description;
+	document.getElementById("profile1Link").innerHTML = language.profile1_link;
 	document.getElementById("helpTextP1").innerHTML = language.text_help_p1;
 	document.getElementById("helpTextP1Content").innerHTML = language.text_help_p1_content;
 	document.getElementById("helpTextP2").innerHTML = language.text_help_p2;
@@ -110,7 +113,8 @@ function onLanguageUpdate(lang) {
 function onLanguageUpdateFailed() {
 }
 
-var text_info = "<h2>Phyimulation 0.1.9</h2>"+
+// The info text. It is equal for all languages.
+var text_info = "<h2>Phyimulation 0.1.10</h2>"+
 "<p></p>"+
 "<p>Copyright 2018 Martin Armbruster</p>"+
 "<p></p>"+

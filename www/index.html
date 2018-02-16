@@ -58,16 +58,16 @@ limitations under the License.
         	<div role="main" class="ui-content" data-inset="false">
         		<p id="hiddenP">Workaround for nd2 bug.</p>
         		<div data-role="nd2tab" data-tab="spheres">
-	        		<ul data-role="listview" data-icon="false">
-	        			<li data-role="list-divider"></li>
-						<li>
-							<a href="#" id="profile1Link" data-transition="slideup">
-								<img src="img/profile1.png" class="ui-thumbnail" id="profImg" />
-								<h2 id="prof1name"></h2>
-							</a>
-						</li>
-					</ul>
-					<p id="prof1des"></p>
+					<div class="nd2-card">
+						<div class="card-title hasAvatar">
+							<img class="card-avatar" src="img/profile1.png" id="profImg">
+							<h2 class="card-primary-title" id="prof1name"></h2>
+						</div>
+						<div class="card-supporting-text" id="prof1des"></div>
+						<div class="card-action">
+							<a href="#" class="ui-btn" id="profile1Link">Start</a>
+						</div>
+					</div>
 				</div>
 				<div data-role="nd2tab" data-tab="settings">
 				</div>

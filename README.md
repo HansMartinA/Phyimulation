@@ -6,7 +6,7 @@ Physics simulation (Phyimulation) simulates a sphere in a box on a smartphone's 
 
 ## What can I do?
 
-When you start Phyimulation, you can select a sphere from different pre-built spheres in the spheres screen ("Spheres" tab) and just have to click on it to start the simulation. In addition, help ("Help" tab) and more information about Pyhimulation ("About" tab) can be shown.
+When you start Phyimulation, you can select a sphere from different pre-built spheres in the spheres screen ("Spheres" tab) and just have to click on the "Start Simulation" button to start the simulation. In addition, help ("Help" tab) and more information about Pyhimulation ("About" tab) can be shown.
 
 ## Which pre-built spheres are there?
 
