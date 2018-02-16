@@ -73,7 +73,7 @@ function drawFrame() {
 	context.fillStyle = currentSphere.color;
 	context.lineWidth = 0;
 	context.fill();
-	window.requestAnimationFrame(drawFrame, canvas);
+	requestID = window.requestAnimationFrame(drawFrame, canvas);
 }
 
 // Updates the acceleration with a current acceleration value retrieved by the accelerometer.

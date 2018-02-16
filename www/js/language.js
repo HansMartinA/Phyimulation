@@ -110,7 +110,7 @@ function onLanguageUpdate(lang) {
 function onLanguageUpdateFailed() {
 }
 
-var text_info = "<h2>Phyimulation 0.1.8</h2>"+
+var text_info = "<h2>Phyimulation 0.1.9</h2>"+
 "<p></p>"+
 "<p>Copyright 2018 Martin Armbruster</p>"+
 "<p></p>"+
