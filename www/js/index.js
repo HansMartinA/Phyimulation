@@ -37,10 +37,13 @@ var app = {
     	canvas = document.getElementById("simulationArea");
     	canvas.width = window.innerWidth;
     	canvas.height = window.innerHeight-65;
+    	loadSettings();
     	document.getElementById("profile1Link").addEventListener("click", function() { app.onSphereSelected(defaultSphere); });
     	document.getElementById("profile2Link").addEventListener("click", function() { app.onSphereSelected(freeSphere); });
     	document.getElementById("profile3Link").addEventListener("click", function() { app.onSphereSelected(heavySphere); });
     	document.getElementById("profile4Link").addEventListener("click", function() { app.onSphereSelected(inelasticSphere); });
+    	document.getElementById("saveSettings").addEventListener("click", saveSettings);
+    	document.getElementById("restoreSettings").addEventListener("click", restoreDefaultSettings);
     	document.getElementById("hideOnMenu0").addEventListener("click", this.onBackToMenu);
     },
     // resume Event Handler
@@ -90,3 +93,58 @@ var app = {
     }
 };
 app.initialize();
+
+/*
+ * Settings section: Handles the settings. 
+ * 
+ */
+//Constructor for settings key objects. These contain the keys for loading or saving the settings.
+function SettingsKeys() {
+	this.mass = document.getElementById("massSlider");
+	this.massKey = "phyimulation.mass";
+	this.cor = document.getElementById("corSlider");
+	this.corKey = "pyhimulation.cor";
+	this.csf = document.getElementById("csfSlider");
+	this.csfKey = "pyhimulation.csf";
+	this.cslf = document.getElementById("cslfSlider");
+	this.cslfKey = "phyimulation.cslf";
+	this.scale = document.getElementById("scaleSlider");
+	this.scaleKey = "phyimulation.scale";
+	this.color = document.getElementById("colorSelection");
+	this.colorKey = "pyhimulation.color";
+}
+//The used settings object.
+var settings = new SettingsKeys();
+
+//Loads all settings.
+function loadSettings() {
+	var storage = window.localStorage;
+	document.getElementById("massSlider").value = storage.getItem(settings.massKey);
+	document.getElementById("corSlider").value = storage.getItem(settings.corKey);
+	document.getElementById("csfSlider").value = storage.getItem(settings.csfKey);
+	document.getElementById("cslfSlider").value = storage.getItem(settings.cslfKey);
+	document.getElementById("scaleSlider").value = storage.getItem(settings.scaleKey);
+	document.getElementById("colorSelection").value = storage.getItem(settings.colorKey);
+}
+
+//Saves all settings.
+function saveSettings() {
+	var storage = window.localStorage;
+	storage.setItem(settings.massKey, document.getElementById("massSlider").value);
+	storage.setItem(settings.corKey, document.getElementById("corSlider").value);
+	storage.setItem(settings.csfKey, document.getElementById("csfSlider").value);
+	storage.setItem(settings.cslfKey, document.getElementById("cslfSlider").value);
+	storage.setItem(settings.scaleKey, document.getElementById("scaleSlider").value);
+	storage.setItem(settings.colorKey, document.getElementById("colorSelection").value);
+}
+
+//Restores the default settings and saves them.
+function restoreDefaultSettings() {
+	document.getElementById("massSlider").value = defaultSphere.mass;
+	document.getElementById("corSlider").value = defaultSphere.cor;
+	document.getElementById("csfSlider").value = defaultSphere.staticCOF;
+	document.getElementById("cslfSlider").value = defaultSphere.slidingCOF;
+	document.getElementById("scaleSlider").value = defaultSphere.accelerationScaling;
+	document.getElementById("colorSelection").value = defaultSphere.color;
+	saveSettings();
+}
