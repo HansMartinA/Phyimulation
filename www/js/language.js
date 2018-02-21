@@ -40,6 +40,9 @@ var en = {
 	profile4_name: "Inelastic sphere",
 	profile4_description: "A completely inelastic sphere. When it hits a wall, all power is absorbed.",
 	profile4_link: "Start Simulation",
+	profile5_name: "User-customized sphere",
+	profile5_description: "A sphere whose values you can set.",
+	profile5_link: "Start Simulation",
 	set_save: "Save",
 	set_restore: "Restore default settings",
 	set_mass: "Mass (kg):",
@@ -83,6 +86,9 @@ var de = {
 	profile4_name: "Inelastische Kugel",
 	profile4_description: "Eine komplett inelastische Kugel. Trifft sie auf eine Wand, wird die komplette Energie absorbiert.",
 	profile4_link: "Starte Simulation",
+	profile5_name: "Benutzerdefinierte Kugel",
+	profile5_description: "Eine Kugel, die Sie selbst einstellen können.",
+	profile5_link: "Start Simulation",
 	set_save: "Speichern",
 	set_restore: "Standard-Einstellungen wiederherstellen",
 	set_mass: "Masse (kg):",
@@ -127,6 +133,9 @@ function setLanguage(language) {
 	document.getElementById("prof4name").innerHTML = language.profile4_name;
 	document.getElementById("prof4des").innerHTML = language.profile4_description;
 	document.getElementById("profile4Link").innerHTML = language.profile4_link;
+	document.getElementById("prof5name").innerHTML = language.profile5_name;
+	document.getElementById("prof5des").innerHTML = language.profile5_description;
+	document.getElementById("profile5Link").innerHTML = language.profile5_link;
 	document.getElementById("saveSettings").innerHTML = language.set_save;
 	document.getElementById("restoreSettings").innerHTML = language.set_restore;
 	document.getElementById("massSliderLabel").innerHTML = language.set_mass;
@@ -168,7 +177,7 @@ function onLanguageUpdateFailed() {
 }
 
 // The info text. It is equal for all languages.
-var text_info = "<h2>Phyimulation 0.2.2</h2>"+
+var text_info = "<h2>Phyimulation 0.2.3</h2>"+
 "<p></p>"+
 "<p>Copyright 2018 Martin Armbruster</p>"+
 "<p></p>"+

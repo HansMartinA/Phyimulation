@@ -42,6 +42,7 @@ var app = {
     	document.getElementById("profile2Link").addEventListener("click", function() { app.onSphereSelected(freeSphere); });
     	document.getElementById("profile3Link").addEventListener("click", function() { app.onSphereSelected(heavySphere); });
     	document.getElementById("profile4Link").addEventListener("click", function() { app.onSphereSelected(inelasticSphere); });
+    	document.getElementById("profile5Link").addEventListener("click", function() { app.onSphereSelected(getUserCustomizedSphere()); });
     	document.getElementById("saveSettings").addEventListener("click", saveSettings);
     	document.getElementById("restoreSettings").addEventListener("click", restoreDefaultSettings);
     	document.getElementById("hideOnMenu0").addEventListener("click", this.onBackToMenu);
@@ -147,4 +148,10 @@ function restoreDefaultSettings() {
 	document.getElementById("scaleSlider").value = defaultSphere.accelerationScaling;
 	document.getElementById("colorSelection").value = defaultSphere.color;
 	saveSettings();
+}
+
+function getUserCustomizedSphere() {
+	return new Sphere(document.getElementById("massSlider").value, document.getElementById("corSlider").value,
+			document.getElementById("csfSlider").value, document.getElementById("cslfSlider").value,
+			document.getElementById("scaleSlider").value, document.getElementById("colorSelection").value);
 }
