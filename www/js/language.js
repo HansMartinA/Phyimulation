@@ -177,7 +177,7 @@ function onLanguageUpdateFailed() {
 }
 
 // The info text. It is equal for all languages.
-var text_info = "<h2>Phyimulation 0.2.3</h2>"+
+var text_info = "<h2>Phyimulation 0.2.4</h2>"+
 "<p></p>"+
 "<p>Copyright 2018 Martin Armbruster</p>"+
 "<p></p>"+

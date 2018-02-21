@@ -31,6 +31,7 @@ var app = {
     onDeviceReady: function() {
     	document.addEventListener("pause", this.onPause, false);
     	document.addEventListener("resume", this.onResume, false);
+    	document.addEventListener("backbutton", this.onBack, false);
     	navigator.globalization.getPreferredLanguage(onLanguageUpdate, onLanguageUpdateFailed);
     	app.header = document.getElementById("headerArea");
     	app.oldColor = app.header.style.color;
@@ -46,6 +47,14 @@ var app = {
     	document.getElementById("saveSettings").addEventListener("click", saveSettings);
     	document.getElementById("restoreSettings").addEventListener("click", restoreDefaultSettings);
     	document.getElementById("hideOnMenu0").addEventListener("click", this.onBackToMenu);
+    },
+    // event handler for the back button
+    onBack: function() {
+    	if(app.isDrawing) {
+    		app.onBackToMenu();
+    	} else {
+    		navigator.app.exitApp();
+    	}
     },
     // resume Event Handler
     onResume: function() {
@@ -150,6 +159,7 @@ function restoreDefaultSettings() {
 	saveSettings();
 }
 
+// Returns the user-customized sphere.
 function getUserCustomizedSphere() {
 	return new Sphere(document.getElementById("massSlider").value, document.getElementById("corSlider").value,
 			document.getElementById("csfSlider").value, document.getElementById("cslfSlider").value,
